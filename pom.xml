@@ -59,9 +59,9 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>log4j</groupId>
-			<artifactId>log4j</artifactId>
-			<version>1.2.15</version>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.17.2</version>
 			<exclusions>
 				<exclusion>
 					<groupId>javax.mail</groupId>
@@ -120,7 +120,7 @@
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>4.7</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>        
 	</dependencies>
@@ -143,7 +143,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>2.5.1</version>
+				<version>3.8.1</version>
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
