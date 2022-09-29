@@ -3,16 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/resources/static/css/common.css" />
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/base.css}" />
     <style>
 
     </style>
 </head>
 <body>
     <div id="container">
-        <div th:include="/inc/header.html"></div>
+        <th:block th:include="inc/header"></th:block>
         <div id="main"></div>
-        <div th:include="/inc/footer.html"></div>
+        <th:block th:include="inc/footer"></th:block>
     </div>
 </body>
 </html>
