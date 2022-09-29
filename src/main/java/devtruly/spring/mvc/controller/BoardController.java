@@ -9,4 +9,13 @@ public class BoardController {
     public String list() {
         return "board/list";
     }
+    @GetMapping(path = {"/board/view"})
+    public String view() {
+        return "board/view";
+    }
+
+    @GetMapping(path = {"/board/write"})
+    public String write() {
+        return "board/write";
+    }
 }

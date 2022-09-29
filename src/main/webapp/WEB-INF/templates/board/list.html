@@ -1,18 +1,17 @@
-<!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/static/css/base.css}" />
-    <style>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
 
-    </style>
-</head>
-<body>
-    <div id="container">
-        <th:block th:include="inc/header"></th:block>
-        <div id="main"></div>
-        <th:block th:include="inc/footer"></th:block>
+<th:block layout:fragment="mystyle">
+
+</th:block>
+
+<th:block layout:fragment="main">
+    <div id="main">
+        <h1>게시판 목록</h1>
     </div>
-</body>
-</html>
+</th:block>
+
+<th:block layout:fragment="myscript">
+
+</th:block>
