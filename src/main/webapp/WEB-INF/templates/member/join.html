@@ -5,14 +5,55 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/base.css}" />
     <style>
-
+        /* 회원 가입폼에 대한 스타일 */
+        #join { border: 1px solid blue; width:300px; margin: 0 auto;}
+        #join > div { margin-bottom: 10px; }
+        #join > div > label { display: inline-block;width: 120px; text-align: right; font-weight: bold; padding-right: 10px; }
+        #join > div > input { padding : 3px; }
+        #join > div > button:nth-child(1) { margin-left: 130px;}
     </style>
 </head>
 <body>
     <div id="container">
         <th:block th:include="inc/header"></th:block>
-        <div id="main"></div>
+        <div id="main">
+            <h1>회원 가입</h1>
+            <form name="join" id="join" action="">
+                <div><label for="uid">아이디</label><input type="text" name="userid" id="uid"></div>
+                <div><label for="pwd">비밀번호</label><input type="text" name="passwd" id="pwd"></div>
+                <div><label for="rpw">비밀번호 확인</label><input type="text" name="repwd" id="rpw"></div>
+                <div><label for="nm">이름</label><input type="text" name="name" id="nm"></div>
+                <div><label for="eml">이메일</label><input type="text" name="email" id="eml"></div>
+
+                <div>
+                    <button type="button" id="okbtn">입력완료</button>
+                    <button type="reset">다시입력</button>
+                </div>
+            </form>
+        </div>
         <th:block th:include="inc/footer"></th:block>
     </div>
+    <script>
+        let okbtn = document.getElementById("okbtn");
+        okbtn.addEventListener("click", checkJoinFrm);
+
+        function checkJoinFrm() {
+            let uid = document.getElementById("uid");
+            let pwd = document.getElementById("pwd");
+            let rpw = document.getElementById("rpw");
+            let nm = document.getElementById("nm");
+            let eml = document.getElementById("eml");
+
+            if (uid.value == '') alert('아이디를 입력 해 주세요');
+            else if (pwd.value == '') alert('비밀번호를 입력 해 주세요');
+            else if (rpw.value != pwd.value) alert('비밀번호 확인을 일치하지 않아요');
+            else if (nm.value == '') alert('이름을 입력 해 주세요');
+            else if (eml.value == '') alert('이메일을 입력 해 주세요');
+            else {
+                let frm = document.join;
+                frm.method = 'post';
+            }
+        }
+    </script>
 </body>
 </html>

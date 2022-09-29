@@ -5,14 +5,46 @@
     <title>Title</title>
     <link rel="stylesheet" type="text/css" th:href="@{/static/css/base.css}" />
     <style>
-
+        /* 로그인 폼에 대한 스타일 */
+        #login { width:300px; margin: 0 auto;}
+        #login > div { margin-bottom: 10px; }
+        #login > div > label { display: inline-block;width: 120px; text-align: right; font-weight: bold; padding-right: 10px; }
+        #login > div > input { padding : 3px; }
+        #login > div > button:nth-child(1) { margin-left: 130px;}
     </style>
 </head>
 <body>
-    <div id="container">
-        <th:block th:include="inc/header"></th:block>
-        <div id="main"></div>
-        <th:block th:include="inc/footer"></th:block>
+<div id="container">
+    <th:block th:include="inc/header"></th:block>
+    <div id="main">
+        <h1>로그인</h1>
+        <form name="login" id="login" action="">
+            <div><label for="uid">아이디</label><input type="text" name="userid" id="uid"></div>
+            <div><label for="pwd">비밀번호</label><input type="text" name="passwd" id="pwd"></div>
+
+            <div>
+                <button type="button" id="okbtn">로그인</button>
+            </div>
+        </form>
     </div>
+    <th:block th:include="inc/footer"></th:block>
+</div>
+<script>
+    let okbtn = document.getElementById("okbtn");
+    okbtn.addEventListener("click", checkJoinFrm);
+
+    function checkJoinFrm() {
+        let uid = document.getElementById("uid");
+        let pwd = document.getElementById("pwd");
+
+        if (uid.value == '') alert('아이디를 입력 해 주세요');
+        else if (pwd.value == '') alert('비밀번호를 입력 해 주세요');
+        else {
+            let frm = document.login;
+            frm.method = 'post';
+            frm.submit();
+        }
+    }
+</script>
 </body>
 </html>
