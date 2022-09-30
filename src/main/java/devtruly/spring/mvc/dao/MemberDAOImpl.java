@@ -42,10 +42,19 @@ public class MemberDAOImpl implements MemberDAO {
     @Override
     public MemberVO selectOneMember(int mno) {
         String sql = "Select userid, name, email, regdate from member where mno = :mno";
-        RowMapper<MemberVO> memberMapper = new MemberRowMapper();
+        RowMapper<MemberVO> memberMapper = (rs, num) -> {
+            MemberVO m = new MemberVO();
+            m.setUserid(rs.getString("userid"));
+            m.setName(rs.getString("name"));
+            m.setEmail(rs.getString("email"));
+            m.setRegdate(rs.getString("regdate"));
+
+            return m;
+        };
+
         return jdbcNamedTemplate.queryForObject(sql, Collections.singletonMap("mno", mno), memberMapper);
     }
-
+    /*
     // 콜백 메소드의 정의
     private class MemberRowMapper implements RowMapper<MemberVO> {
 
@@ -59,5 +68,5 @@ public class MemberDAOImpl implements MemberDAO {
 
             return m;
         }
-    }
+    }*/
 }
