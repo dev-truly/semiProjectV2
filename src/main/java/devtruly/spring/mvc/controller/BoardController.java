@@ -1,10 +1,22 @@
 package devtruly.spring.mvc.controller;
 
+import devtruly.spring.mvc.service.BoardService;
+import devtruly.spring.mvc.vo.BoardVO;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class BoardController {
+    Logger LOGGER = LoggerFactory.getLogger(getClass());
+
+    // bean 클래스로 정의한 경우 @Autowired 어노테이션 생략 가능 Spring 5.0 이상
+    @Autowired
+    BoardService bsrv;
+
     @GetMapping(path = {"/board/list"})
     public String list() {
         return "board/list";
@@ -17,5 +29,12 @@ public class BoardController {
     @GetMapping(path = {"/board/write"})
     public String write() {
         return "board/write";
+    }
+
+    @PostMapping(path = {"/board/write"})
+    public String writeok(BoardVO boardVO) {
+        bsrv.newBoard(boardVO);
+
+        return "redirect:/board/list";
     }
 }

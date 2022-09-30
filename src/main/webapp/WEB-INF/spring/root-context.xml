@@ -25,5 +25,4 @@
 		<property name="dataSource" ref="basicDataSource"/>
 	</bean>
 
-
 </beans>

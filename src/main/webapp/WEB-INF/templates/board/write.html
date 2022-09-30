@@ -3,15 +3,44 @@
       layout:decorate="~{fragments/layout}">
 
 <th:block layout:fragment="mystyle">
-
+    <style>
+        #boardfrm { border: solid 1px red; width: 500px; margin: 0 auto; }
+        #boardfrm div { margin-bottom: 10px; }
+        #boardfrm label { width: 110px; display: inline-block; text-align: right; font-weight: bold; }
+        #boardfrm div:nth-last-child(2) > label { vertical-align: top; }
+        #boardfrm div:last-child > button:first-child { margin-left: 110px; }
+        input:hover, textarea:hover { background: aqua; }
+    </style>
 </th:block>
 
 <th:block layout:fragment="main">
     <div id="main">
         <h1>게시판 등록</h1>
+        <form name="boardfrm" id="boardfrm">
+            <div><label for="tit">제목</label><input type="text" name="title" id="tit"></div>
+            <div><label for="uid">작성자</label><input type="text" name="userid" id="uid" value="abc111" readonly></div>
+            <div><label for="cnt">본문</label><textarea type="text" name="contents" rows="7" cols="45" id="cnt"></textarea></div>
+            <div>
+                <button type="button" id="bdokbtn">입력완료</button>
+                <button type="reset">다시입력</button>
+            </div>
+        </form>
     </div>
 </th:block>
 
 <th:block layout:fragment="myscript">
+    <script>
+        function checkboardfrm() {
+            let frm = document.boardfrm;
+            if (frm.title.value == '') alert("제목을 작성하세요");
+            if (frm.contents.value == '') alert("본문을 작성하세요");
+            else {
+                frm.method = 'post';
+                frm.submit();
+            }
+        }
+        let bdokbtn = document.getElementById("bdokbtn");
+        bdokbtn.addEventListener('click', checkboardfrm);
+    </script>
 
 </th:block>
