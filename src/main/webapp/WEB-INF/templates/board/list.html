@@ -3,15 +3,130 @@
       layout:decorate="~{fragments/layout}">
 
 <th:block layout:fragment="mystyle">
-
+    <style>
+        table { width: 75%; border-collapse: collapse; margin: 0 auto;}
+        th, td { border: 1px solid black; text-align: center; padding: 10px; }
+        table thead tr:first-child td { border: none; text-align: right; }
+        table tbody tr td:nth-child(2) { text-align: left; }
+        table tfoot tr:last-child td { border: none; }
+        table tfoot tr:last-child td .cpage { color: red; font-weight: bold; font-size: 150%;}
+    </style>
 </th:block>
 
 <th:block layout:fragment="main">
     <div id="main">
         <h1>게시판 목록</h1>
+        <table>
+            <colgroup>
+                <col style="width: 10%;" />
+                <col style="width: 50%;" />
+                <col style="width: 15%;" />
+                <col style="width: 15%;" />
+                <col style="width: 10%;" />
+            </colgroup>
+            <thead>
+                <tr><td colspan="5"><button type="button" id="newbtn" >새글쓰기</button></td></tr>
+                <tr>
+                    <th>번호</th>
+                    <th>제목</th>
+                    <th>작성자</th>
+                    <th>작성일</th>
+                    <th>조회수</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr th:each="board : ${bdlist}">
+                    <td>1</td>
+                    <td><a th:href="@{/board/view/{bno}(bno=${board.bno})}"  th:text="${board.title}"></a></td>
+                    <td th:text="${board.userid}"></td>
+                    <td th:text="${#strings.substring(board.regdate, 0, 10)}"></td>
+                    <td th:text="${board.views}"></td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+                <tr>
+                    <td>1</td>
+                    <td>시간은 금이라구 친구~</td>
+                    <td>abc123</td>
+                    <td>2022-09-03</td>
+                    <td>99</td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="5"> ◀ ︎◁ 1 2 3 <span class="cpage">4</span> 5 6 7 8 9 10 ▷ ▶︎</td>
+                </tr>
+            </tfoot>
+        </table>
     </div>
 </th:block>
 
 <th:block layout:fragment="myscript">
-
+    <script>
+        let newBtn = document.querySelector("#newbtn");
+        newBtn.addEventListener('click', () => {
+            location.href = "/board/write";
+        })
+    </script>
 </th:block>
