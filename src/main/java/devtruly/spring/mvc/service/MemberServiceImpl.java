@@ -6,6 +6,8 @@ import devtruly.spring.mvc.vo.MemberVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service("msrv")
 public class MemberServiceImpl implements MemberService {
     @Autowired
@@ -17,5 +19,10 @@ public class MemberServiceImpl implements MemberService {
         if (mdao.insertMember(memberVO) > 0) isInsert = true;
 
         return isInsert;
+    }
+
+    @Override
+    public MemberVO selectMember(int mno) {
+        return mdao.selectOneMember(mno);
     }
 }
