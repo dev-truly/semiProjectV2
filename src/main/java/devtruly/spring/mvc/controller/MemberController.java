@@ -29,11 +29,14 @@ public class MemberController {
     // error : 에러 발생
     protected Logger LOGGER = LoggerFactory.getLogger(getClass());
 
+    // 로그인 안했다면 -> member/join
+    // 로그인 했다면 -> redirect:/myinfo
     @GetMapping(path = {"/join"})
-    public String join() {
-
+    public String join(HttpSession session) {
+        String returnPage = "member/join";
+        if (session.getAttribute("m") != null) returnPage = "redirect:/myinfo";
         LOGGER.info("join 호출!");
-        return "member/join";
+        return returnPage;
     }
 
     @PostMapping(path = {"/join"})
