@@ -35,8 +35,8 @@ public class MemberDAOImpl implements MemberDAO {
     }
 
     @Override
-    public MemberVO selectOneMember(int mno) {
-        String sql = "Select userid, name, email, regdate from member where mno = :mno";
+    public MemberVO selectOneMember(String userId) {
+        String sql = "Select userid, name, email, regdate from member where userid = :userid";
         RowMapper<MemberVO> memberMapper = (rs, num) -> {
             MemberVO m = new MemberVO();
             m.setUserid(rs.getString("userid"));
@@ -47,7 +47,7 @@ public class MemberDAOImpl implements MemberDAO {
             return m;
         };
 
-        return jdbcNamedTemplate.queryForObject(sql, Collections.singletonMap("mno", mno), memberMapper);
+        return jdbcNamedTemplate.queryForObject(sql, Collections.singletonMap("userid", userId), memberMapper);
     }
 
     @Override

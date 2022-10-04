@@ -7,7 +7,7 @@ import java.util.List;
 public interface MemberDAO {
     int insertMember(MemberVO memberVO);
 
-    MemberVO selectOneMember(int mno);
+    MemberVO selectOneMember(String userId);
 
     int selectOneMember(MemberVO memberVO);
 }

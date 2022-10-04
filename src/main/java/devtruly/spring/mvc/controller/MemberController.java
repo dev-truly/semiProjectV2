@@ -72,12 +72,22 @@ public class MemberController {
         return "redirect:/";
     }
 
+    // 로그인 안했다면 -> redirect:/login
+    // 로그인 했다면 -> member/myinfo
     @GetMapping(path = {"/myinfo"})
     public String myinfo(
+            HttpSession session,
             Model model
     ) {
+        String returnPage = "member/myinfo";
+        if (session.getAttribute("m") != null) {
+            MemberVO memberVO = (MemberVO) session.getAttribute("m");
+            model.addAttribute("member", msrv.readOneMember(memberVO.getUserid()));
+        }
+        else {
+            returnPage = "redirect:/login";
+        }
 
-        //model.addAttribute("member", msrv.selectMember(mno));
-        return "member/myinfo";
+        return returnPage;
     }
 }

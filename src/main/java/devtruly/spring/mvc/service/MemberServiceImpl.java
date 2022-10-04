@@ -22,8 +22,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberVO selectMember(int mno) {
-        return mdao.selectOneMember(mno);
+    public MemberVO readOneMember(String userId) {
+        return mdao.selectOneMember(userId);
     }
 
     @Override

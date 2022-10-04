@@ -7,7 +7,7 @@ import java.util.List;
 public interface MemberService {
     boolean newMember(MemberVO memberVO);
 
-    MemberVO selectMember(int mno);
+    MemberVO readOneMember(String userId);
 
     boolean checkLogin(MemberVO memberVO);
 }
