@@ -18,7 +18,7 @@
         <h1>게시판 등록</h1>
         <form name="boardfrm" id="boardfrm">
             <div><label for="tit">제목</label><input type="text" name="title" id="tit"></div>
-            <div><label for="uid">작성자</label><input type="text" name="userid" id="uid" value="abc111" readonly></div>
+            <div><label for="uid">작성자</label><input type="text" name="userid" id="uid" th:value="${session.m.getUserid()}" readonly></div>
             <div><label for="cnt">본문</label><textarea type="text" name="contents" rows="7" cols="45" id="cnt"></textarea></div>
             <div>
                 <button type="button" id="bdokbtn">입력완료</button>

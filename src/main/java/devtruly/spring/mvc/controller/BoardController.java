@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
+
 @Controller
 public class BoardController {
     Logger LOGGER = LoggerFactory.getLogger(getClass());
@@ -30,8 +32,12 @@ public class BoardController {
     }
 
     @GetMapping(path = {"/board/write"})
-    public String write() {
-        return "board/write";
+    public String write(HttpSession session) {
+        String returnPage = "board/write";
+
+        if (session.getAttribute("m") == null) returnPage = "redirect:/login";
+
+        return returnPage;
     }
 
     @PostMapping(path = {"/board/write"})

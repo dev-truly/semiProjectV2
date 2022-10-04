@@ -25,7 +25,7 @@
                 <col style="width: 10%;" />
             </colgroup>
             <thead>
-                <tr><td colspan="5"><button type="button" id="newbtn" >새글쓰기</button></td></tr>
+                <tr th:if="${!#strings.isEmpty(session.m)}"><td colspan="5"><button type="button" id="newbtn" >새글쓰기</button></td></tr>
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
