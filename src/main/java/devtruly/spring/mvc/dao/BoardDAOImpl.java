@@ -12,7 +12,9 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Repository("bdao")
 public class BoardDAOImpl implements BoardDAO {
@@ -53,10 +55,12 @@ public class BoardDAOImpl implements BoardDAO {
     }
 
     @Override
-    public List<BoardVO> selectBoard() {
-        String sql = "Select bno, title, userid, regdate, views From board order by bno desc";
-
-        return jdbcNamedTemplate.query(sql, Collections.emptyMap(), boardMapper);
+    public List<BoardVO> selectBoard(int snum) {
+        String sql = "Select bno, title, userid, regdate, views From board order by bno desc limit :snum, 25";
+        Map<String, Object> params = new HashMap<>();
+        params.put("snum", snum);
+        //params.put("enum", snum + 25);
+        return jdbcNamedTemplate.query(sql, params, boardMapper);
     }
 
     @Override

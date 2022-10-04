@@ -7,7 +7,7 @@ import java.util.List;
 public interface BoardDAO {
     int insertBoard(BoardVO boardVO);
 
-    List<BoardVO> selectBoard();
+    List<BoardVO> selectBoard(int snum);
 
     BoardVO selectOneBoard(int boardNo);
 }
