@@ -8,7 +8,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 
@@ -26,9 +28,17 @@ public class BoardController {
 
         return "board/list";
     }
-    @GetMapping(path = {"/board/view"})
-    public String view() {
-        return "board/view";
+    @GetMapping(path = {"/board/view/{boardNo}"})
+    public ModelAndView view(
+            @PathVariable("boardNo") int boardNo,
+            ModelAndView mv
+    ) {
+        mv.setViewName("board/view");
+        mv.addObject("bd", bsrv.readOneBoard(boardNo));
+        mv.addObject("bno", boardNo);
+        //String returnPage = "redirect:/board/list";
+
+        return mv;
     }
 
     @GetMapping(path = {"/board/write"})

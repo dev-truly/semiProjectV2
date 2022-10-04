@@ -58,4 +58,21 @@ public class BoardDAOImpl implements BoardDAO {
 
         return jdbcNamedTemplate.query(sql, Collections.emptyMap(), boardMapper);
     }
+
+    @Override
+    public BoardVO selectOneBoard(int boardNo) {
+        String sql = " update board set views = views + 1 where bno = :bno";
+        jdbcNamedTemplate.query(sql, Collections.singletonMap("bno", boardNo), boardMapper);
+
+        sql = "Select * From board Where bno = :bno";
+        BoardVO board = null;
+
+        List<BoardVO> boardList = jdbcNamedTemplate.query(sql, Collections.singletonMap("bno", boardNo), boardMapper);
+
+        if (boardList.size() >= 1) {
+            board = boardList.get(0);
+        }
+
+        return board;
+    }
 }

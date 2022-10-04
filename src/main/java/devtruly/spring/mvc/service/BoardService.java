@@ -8,4 +8,6 @@ public interface BoardService {
     boolean newBoard(BoardVO boardVO);
 
     List<BoardVO> readBoard();
+
+    BoardVO readOneBoard(int boardNo);
 }
