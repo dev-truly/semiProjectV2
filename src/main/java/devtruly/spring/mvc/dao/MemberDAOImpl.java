@@ -1,7 +1,7 @@
 package devtruly.spring.mvc.dao;
 
 import devtruly.spring.mvc.vo.MemberVO;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.jdbc.core.namedparam.BeanPropertySqlParameterSource;
@@ -11,16 +11,11 @@ import org.springframework.jdbc.core.simple.SimpleJdbcInsert;
 import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @Repository("mdao")
 public class MemberDAOImpl implements MemberDAO {
-    //@Autowired
+    @Autowired
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate jdbcNamedTemplate;
     private SimpleJdbcInsert simpleInsert;
@@ -54,6 +49,14 @@ public class MemberDAOImpl implements MemberDAO {
 
         return jdbcNamedTemplate.queryForObject(sql, Collections.singletonMap("mno", mno), memberMapper);
     }
+
+    @Override
+    public int selectOneMember(MemberVO memberVO) {
+        String sql = "Select count(mno) from member Where userid = ? and passwd = ? ";
+        Object[] params = { memberVO.getUserid(), memberVO.getPasswd() };
+
+        return jdbcTemplate.queryForObject(sql, params, Integer.class);
+    }
     /*
     // 콜백 메소드의 정의
     private class MemberRowMapper implements RowMapper<MemberVO> {
@@ -62,7 +65,7 @@ public class MemberDAOImpl implements MemberDAO {
         public MemberVO mapRow(ResultSet rs, int num) throws SQLException {
             MemberVO m = new MemberVO();
             m.setUserid(rs.getString("userid"));
-            m.setPasswd(rs.getString("name"));
+            m.setPasswd(rs.getString("name"));식
             m.setEmail(rs.getString("email"));
             m.setRegdate(rs.getString("regdate"));
 

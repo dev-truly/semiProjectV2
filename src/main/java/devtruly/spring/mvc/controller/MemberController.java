@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import javax.servlet.http.HttpSession;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
@@ -51,16 +52,32 @@ public class MemberController {
     }
 
     @PostMapping(path = {"/login"})
-    public String loginOk() {
-        return "redirect:/myinfo";
+    public String loginOk(MemberVO memberVO, HttpSession session) {
+        String returnPage = "member/lgnfail";
+
+        if (msrv.checkLogin(memberVO)) {
+            session.setAttribute("m", memberVO); // 세션 저장
+            returnPage = "redirect:/myinfo";
+        }
+
+        return returnPage;
     }
 
-    @GetMapping(path = {"/myinfo/{mno}"})
+    @GetMapping(path = {"/logout"})
     public String myinfo(
-            @PathVariable("mno") int mno,
+            HttpSession session
+    ) {
+        session.invalidate(); // 모든 세션 제거
+        //model.addAttribute("member", msrv.selectMember(mno));
+        return "redirect:/";
+    }
+
+    @GetMapping(path = {"/myinfo"})
+    public String myinfo(
             Model model
     ) {
-        model.addAttribute("member", msrv.selectMember(mno));
+
+        //model.addAttribute("member", msrv.selectMember(mno));
         return "member/myinfo";
     }
 }

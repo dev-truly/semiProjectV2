@@ -8,4 +8,6 @@ public interface MemberService {
     boolean newMember(MemberVO memberVO);
 
     MemberVO selectMember(int mno);
+
+    boolean checkLogin(MemberVO memberVO);
 }

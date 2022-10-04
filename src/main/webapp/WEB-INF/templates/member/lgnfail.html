@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/static/css/base.css}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.9.1/font/bootstrap-icons.css">
+</head>
+<body>
+<div id="container">
+    <th:block th:include="inc/header"></th:block>
+    <div style="text-align: center;">
+        <h1>로그인 실패</h1>
+        <div>
+            <i class="bi bi-x-circle-fill" style="font-size: 10rem; color: red;"></i>
+            <div>입력하신 아이디와 비밀번호가 일치하는 회원 정보를 찾지 못했습니다.</div>
+        </div>
+    </div>
+    <th:block th:include="inc/footer"></th:block>
+</div>
+</body>
+</html>

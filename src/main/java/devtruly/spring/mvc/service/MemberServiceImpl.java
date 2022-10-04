@@ -25,4 +25,12 @@ public class MemberServiceImpl implements MemberService {
     public MemberVO selectMember(int mno) {
         return mdao.selectOneMember(mno);
     }
+
+    @Override
+    public boolean checkLogin(MemberVO memberVO) {
+        boolean isLogin = false;
+        if ((mdao.selectOneMember(memberVO)) > 0) isLogin = true;
+        System.out.println(isLogin);
+        return isLogin;
+    }
 }
