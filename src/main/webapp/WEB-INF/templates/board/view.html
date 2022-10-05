@@ -24,8 +24,10 @@
         </div>
         <div>
             <button type="button" id="go2list">목록으로</button>
-            <button type="button" id="go2upd">수정하기</button>
-            <button type="button" id="go2del">삭제하기</button>
+            <th:block th:if="${!#strings.isEmpty(session.m) && session.m.userid eq bd.userid}">
+                <button type="button" id="go2upd">수정하기</button>
+                <button type="button" id="go2del">삭제하기</button>
+            </th:block>
         </div>
     </div>
 </th:block>
@@ -42,13 +44,13 @@
             location.href = '/board/list';
         });
 
-        go2Upd.addEventListener('click', () => {
+        go2Upd?.addEventListener('click', () => {
             if (confirm('정말 수정 하시겠습니까?')) {
                 location.href = '/board/upd/[[${bno}]]';
             }
         });
 
-        go2Del.addEventListener('click', () => {
+        go2Del?.addEventListener('click', () => {
             if (confirm('정말 삭제 하시겠습니까?')) {
                 location.href = '/board/del/[[${bno}]]';
             }

@@ -35,14 +35,28 @@ public class BoardController {
     * 3page : 51 ~ 75
     * ipage : m번째 ~ n번째 게시글 읽어옴
     * snum = (i - 1) * 25
+    * 현재 페이지에 따라서 보여줄 페이지 블럭 결정
+    * ex) 총페이지수가 27일때
+    * stpgn = ((cpg - 1) / 10) * 10 + 1
     * */
     @GetMapping(path = {"/board/list"})
     public String list(Model model,
-            @RequestParam(name = "cpg", required = true, defaultValue = "1") int cpg
+            @RequestParam(name = "cpg", required = true, defaultValue = "1") int cpg,
+            @RequestParam(name = "fkey", required = true, defaultValue = "") String fkey,
+            @RequestParam(name = "fvalue", required = true, defaultValue = "") String fvalue
        ) {
+        cpg = (cpg < 1) ? 1 : cpg;
+
         int perPage = 25;
         int snum = (cpg - 1) * perPage;
-        model.addAttribute("bdlist", bsrv.readBoard(snum));
+        int stpgn = ((cpg - 1) / 10) * 10 + 1;
+
+        model.addAttribute("bdlist", bsrv.readBoard(snum, fkey, fvalue));
+        model.addAttribute("pages", bsrv.readCountBoard(fkey, fvalue));
+        model.addAttribute("cpg", cpg);
+        model.addAttribute("stpgn", stpgn);
+        model.addAttribute("fkey", fkey);
+        model.addAttribute("fvalue", fvalue);
 
         return "board/list";
     }
@@ -74,4 +88,5 @@ public class BoardController {
 
         return "redirect:/board/list";
     }
+
 }

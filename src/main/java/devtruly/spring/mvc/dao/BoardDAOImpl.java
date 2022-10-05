@@ -1,6 +1,7 @@
 package devtruly.spring.mvc.dao;
 
 import devtruly.spring.mvc.vo.BoardVO;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.RowMapper;
@@ -18,7 +19,7 @@ import java.util.Map;
 
 @Repository("bdao")
 public class BoardDAOImpl implements BoardDAO {
-    //@Autowired // bean태그에 정의한 경우 생략가능
+    @Autowired // bean태그에 정의한 경우 생략가능
     private JdbcTemplate jdbcTemplate;
     private NamedParameterJdbcTemplate jdbcNamedTemplate;
     private RowMapper<BoardVO> boardMapper = BeanPropertyRowMapper.newInstance(BoardVO.class);
@@ -55,12 +56,20 @@ public class BoardDAOImpl implements BoardDAO {
     }
 
     @Override
-    public List<BoardVO> selectBoard(int snum) {
-        String sql = "Select bno, title, userid, regdate, views From board order by bno desc limit :snum, 25";
+    public List<BoardVO> selectBoard(int snum, String fkey, String fvalue) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select bno, title, userid, regdate, views from board");
+        if (fkey.equals("title")) sql.append(" where title like :fval");
+        else if (fkey.equals("contents")) sql.append(" where contents like :fval");
+        else if (fkey.equals("userid")) sql.append(" where userid like :fval");
+        sql.append(" order by bno desc limit :snum, 25");
+
         Map<String, Object> params = new HashMap<>();
+        params.put("fval", String.format("%%%s%%", fvalue));
         params.put("snum", snum);
+
         //params.put("enum", snum + 25);
-        return jdbcNamedTemplate.query(sql, params, boardMapper);
+        return jdbcNamedTemplate.query(sql.toString(), params, boardMapper);
     }
 
     @Override
@@ -78,5 +87,19 @@ public class BoardDAOImpl implements BoardDAO {
         }
 
         return board;
+    }
+
+    @Override
+    public int selectBoardCount(String fkey, String fvalue) {
+        StringBuilder sql = new StringBuilder();
+        sql.append(" select ceil(count(bno) / 25) from board");
+        if (fkey.equals("title")) sql.append(" where title like :fval");
+        else if (fkey.equals("contents")) sql.append(" where contents like :fval");
+        else if (fkey.equals("userid")) sql.append(" where userid like :fval");
+
+        Map<String, Object> params = new HashMap<>();
+        params.put("fval", String.format("%%%s%%", fvalue));
+
+        return jdbcNamedTemplate.queryForObject(sql.toString(), params, Integer.class);
     }
 }

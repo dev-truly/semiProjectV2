@@ -10,12 +10,14 @@
         table tbody tr td:nth-child(2) { text-align: left; }
         table tfoot tr:last-child td { border: none; }
         table tfoot tr:last-child td .cpage { color: red; font-weight: bold; font-size: 150%;}
+        .alignleft {text-align: left; display: inline-block; width: 89%;}
     </style>
 </th:block>
 
 <th:block layout:fragment="main">
     <div id="main">
-        <h1>게시판 목록</h1>
+        <h1 th:with="qry=(${#httpServletRequest.queryString})">게시판 목록([[${qry}]])</h1>
+
         <table>
             <colgroup>
                 <col style="width: 10%;" />
@@ -25,7 +27,22 @@
                 <col style="width: 10%;" />
             </colgroup>
             <thead>
-                <tr th:if="${!#strings.isEmpty(session.m)}"><td colspan="5"><button type="button" id="newbtn" >새글쓰기</button></td></tr>
+                <tr>
+                    <td colspan="5">
+                        <span class="alignleft" th:if="${!#strings.isEmpty(session.m)}">
+                            <form name="fForm">
+                                <select name="fkey">
+                                    <option value="title">제목</option>
+                                    <option value="contents">내용</option>
+                                    <option value="userid">작성자</option>
+                                </select>
+                                <input type="text" name="fvalue" th:value="${param.fvalue}" />
+                                <button id="findbtn">검색</button>
+                            </form>
+                        </span>
+                        <button th:if="${!#strings.isEmpty(session.m)}" type="button" id="newbtn" >새글쓰기</button>
+                    </td>
+                </tr>
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
@@ -45,7 +62,18 @@
             </tbody>
             <tfoot>
                 <tr>
-                    <td colspan="5"> ◀ ︎◁ 1 2 3 <span class="cpage">4</span> 5 6 7 8 9 10 ▷ ▶︎</td>
+                    <td colspan="5" class="pgnav">
+                        <a th:if="${cpg > 1}" th:href="@{/board/list(cpg=1, fkey=${fkey}, fvalue=${fvalue})}">[처음]</a>
+                        <a th:if="${cpg - 10 >= 1}" th:href="@{/board/list(cpg=${cpg - 10}, fkey=${fkey}, fvalue=${fvalue})}">[이전 10]</a>
+                        <a th:if="${cpg - 1 >= 1}" th:href="@{/board/list(cpg=${cpg - 1}, fkey=${fkey}, fvalue=${fvalue})}">[이전]</a>
+                        <th:block th:each="i : ${#numbers.sequence(stpgn, ((stpgn + 9 < pages) ? stpgn + 9 : pages))}">
+                            <span th:if="${cpg == i}" class="cpage">[[${i}]]</span>
+                            <span th:unless="${cpg == i}"><a th:href="@{/board/list(cpg=${i}, fkey=${fkey}, fvalue=${fvalue})}">[[${i}]]</a></span>
+                        </th:block>
+                        <a th:if="${cpg < pages}" th:href="@{/board/list(cpg=${cpg + 1}, fkey=${fkey}, fvalue=${fvalue})}">[다음]</a>
+                        <a th:if="${cpg + 10 <= pages}" th:href="@{/board/list(cpg=${cpg + 10}, fkey=${fkey}, fvalue=${fvalue})}">[다음 10]</a>
+                        <a th:if="${cpg < pages}" th:href="@{/board/list(cpg=${pages}, fkey=${fkey}, fvalue=${fvalue})}">[끝]</a>
+                    </td>
                 </tr>
             </tfoot>
         </table>
@@ -54,9 +82,21 @@
 
 <th:block layout:fragment="myscript">
     <script>
+        // emcascript 2020 지원시 - 최신 브라우저 사용시
+        // Cannot read properties of null 세련되게 처리하기
+        // optional chaining 사용 => 객체?.addEventListener
+        let findBtn = document.querySelector("#findbtn");
         let newBtn = document.querySelector("#newbtn");
-        newBtn.addEventListener('click', () => {
+        findBtn?.addEventListener('click', () => {
+            if (document.fForm.fvalue == '') alert('검색할 내용을 작성하세요');
+            else {
+                let qry = new URLSearchParams(new FormData(document.fForm)).toString();
+                location.href = `/board/list?\${qry}`;
+            }
+        });
+
+        newBtn?.addEventListener('click', () => {
             location.href = "/board/write";
-        })
+        });
     </script>
 </th:block>
