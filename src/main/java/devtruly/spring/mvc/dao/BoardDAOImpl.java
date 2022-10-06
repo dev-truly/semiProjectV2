@@ -102,4 +102,22 @@ public class BoardDAOImpl implements BoardDAO {
 
         return jdbcNamedTemplate.queryForObject(sql.toString(), params, Integer.class);
     }
+
+    @Override
+    public boolean deleteBoard(int boardNo) {
+        String sql = "Delete From board Where bno = :boardNo";
+        return (jdbcNamedTemplate.update(sql, Collections.singletonMap("boardNo", boardNo)) > 0) ? true : false;
+    }
+
+    @Override
+    public int updateBoard(BoardVO boardVO) {
+        String sql = "Update board Set contents = :contents, title = :title, regdate = current_timestamp() Where bno = :boardNo";
+        Map<String, Object> params = new HashMap<>() {{
+            put("boardNo", boardVO.getBno());
+            put("title", boardVO.getTitle());
+            put("contents", boardVO.getContents());
+        }};
+        return jdbcNamedTemplate.update(sql, params);
+    }
+
 }

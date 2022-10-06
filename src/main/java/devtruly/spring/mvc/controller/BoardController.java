@@ -89,4 +89,44 @@ public class BoardController {
         return "redirect:/board/list";
     }
 
+    @GetMapping(path = {"/board/del/{boardNo}"})
+    public String remove(
+            HttpSession session,
+        @PathVariable("boardNo") int boardNo
+    ) {
+        String returnPage = "redirect:/board/view/" + boardNo;
+
+        if (session.getAttribute("m") == null) returnPage = "redirect:/login";
+
+        if (bsrv.delBoard(boardNo)) returnPage = "redirect:/board/list";
+
+        return returnPage;
+    }
+
+    @GetMapping(path = {"/board/upd/{boardNo}"})
+    public String update(
+            HttpSession session,
+            @PathVariable("boardNo") int boardNo,
+            Model model
+    ) {
+        String returnPage = "board/modify";
+
+        if (session.getAttribute("m") == null) returnPage = "redirect:/login";
+        else model.addAttribute("bd", bsrv.readOneBoard(boardNo));
+
+        return returnPage;
+    }
+
+    @PostMapping(path = {"/board/upd/{boardNo}"})
+    public String updateok(
+            @PathVariable("boardNo") String boardNo,
+            BoardVO boardVO
+    ) {
+        boardVO.setBno(boardNo);
+        String returnPage = "redirect:/board/list";
+
+        bsrv.modifyBoard(boardVO);
+
+        return returnPage;
+    }
 }

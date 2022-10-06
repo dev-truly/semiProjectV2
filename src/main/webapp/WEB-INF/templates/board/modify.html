@@ -1,0 +1,49 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{fragments/layout}">
+
+<th:block layout:fragment="mystyle">
+    <style>
+        #view { border: 1px solid blue; width: 60%; margin: 65px auto;}
+        #view div { margin-top: 10px; }
+        #view label { display: inline-block; width: 120px; text-align: right; font-weight: bold; margin-right: 15px; }
+        #cnts { display: inline-block; width: 350px; height: 450px; border: 1px solid gold;}
+
+    </style>
+</th:block>
+
+<th:block layout:fragment="main">
+    <div id="main">
+        <h1>게시판 수정</h1>
+        <div id="view">
+            <form name="modifyFrm" method="post">
+                <div><label>제목</label><span><input type="text" name="title" th:value="${bd.title}" /></span></div>
+                <div><label>작성자</label><span th:text="${bd.userid}"></span></div>
+                <div><label>작성일</label><span th:text="${bd.regdate}"></span></div>
+                <div><label>조회수</label><span th:text="${bd.views}"></span></div>
+                <div><label>본문</label><span><textarea name="contents" rows="7" cols="45" id="cnts" th:text="${bd.contents}" ></textarea></span></div>
+            </form>
+        </div>
+        <div>
+            <button type="button" id="go2list">목록으로</button>
+            <button type="button" id="go2upd">수정하기</button>
+        </div>
+    </div>
+</th:block>
+
+<th:block layout:fragment="myscript">
+    <script>
+        let go2List = document.querySelector("#go2list");
+        let go2Upd = document.querySelector("#go2upd");
+
+        go2List.addEventListener('click', () => {
+            location.href = '/board/list';
+        });
+
+        go2Upd?.addEventListener('click', () => {
+            if (confirm('정말 수정 하시겠습니까?')) {
+                document.modifyFrm.submit();
+            }
+        });
+    </script>
+</th:block>

@@ -35,4 +35,15 @@ public class BoardServiceImpl implements BoardService {
     public int readCountBoard(String fkey, String fvalue) {
         return bdao.selectBoardCount(fkey, fvalue);
     }
+
+    @Override
+    public boolean delBoard(int boardNo) {
+        return bdao.deleteBoard(boardNo);
+    }
+
+    @Override
+    public boolean modifyBoard(BoardVO boardVO) {
+        int modifyResult = bdao.updateBoard(boardVO);
+        return  (modifyResult > 0) ? true : false;
+    }
 }
