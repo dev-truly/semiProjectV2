@@ -50,7 +50,6 @@
 	</bean>
 
 	<context:component-scan base-package="devtruly.spring.mvc" />
-
-
+	<context:property-placeholder location="classpath:grecaptcha.properties" />
 
 </beans>

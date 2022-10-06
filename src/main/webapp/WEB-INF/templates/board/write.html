@@ -10,16 +10,22 @@
         #boardfrm div:nth-last-child(2) > label { vertical-align: top; }
         #boardfrm div:last-child > button:first-child { margin-left: 110px; }
         input:hover, textarea:hover { background: aqua; }
+        .pushright { margin-left: 115px;}
+        .danger {color:red; font-weight: bold;}
     </style>
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
 </th:block>
 
 <th:block layout:fragment="main">
     <div id="main">
         <h1>게시판 등록</h1>
         <form name="boardfrm" id="boardfrm">
-            <div><label for="tit">제목</label><input type="text" name="title" id="tit"></div>
+            <input type="hidden" name="grecaptcha" />
+            <div><label for="tit">제목</label><input type="text" name="title" id="tit" th:value="${(bd==null)}?'':${bd.title}" /></div>
             <div><label for="uid">작성자</label><input type="text" name="userid" id="uid" th:value="${session.m.getUserid()}" readonly></div>
-            <div><label for="cnt">본문</label><textarea type="text" name="contents" rows="7" cols="45" id="cnt"></textarea></div>
+            <div><label for="cnt">본문</label><textarea type="text" name="contents" rows="7" cols="45" id="cnt" th:text="${(bd==null)}?'':${bd.contents}"></textarea></div>
+            <div class="g-recaptcha pushright" data-sitekey="6Lct81oiAAAAAEn097MlCS8uUp_5ZEAr1TRdht2H" data-callback="recaptcha" ></div>
+            <div th:if="${!#strings.isEmpty(resultMsg)}" class="pushright danger" th:text="${resultMsg}"></div>
             <div>
                 <button type="button" id="bdokbtn">입력완료</button>
                 <button type="reset">다시입력</button>
@@ -33,8 +39,10 @@
         function checkboardfrm() {
             let frm = document.boardfrm;
             if (frm.title.value == '') alert("제목을 작성하세요");
-            if (frm.contents.value == '') alert("본문을 작성하세요");
+            else if (frm.contents.value == '') alert("본문을 작성하세요");
+            else if (grecaptcha.getResponse() == '') alert("자동입력 방지를 클릭하세요");
             else {
+                frm.grecaptcha.value = grecaptcha.getResponse();
                 frm.method = 'post';
                 frm.submit();
             }
