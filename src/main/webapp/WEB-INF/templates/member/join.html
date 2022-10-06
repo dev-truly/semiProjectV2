@@ -19,7 +19,10 @@
         <div id="main">
             <h1>회원 가입</h1>
             <form name="join" id="join" action="/join">
-                <div><label for="uid">아이디</label><input type="text" name="userid" id="uid"></div>
+                <div>
+                    <label for="uid">아이디</label><input type="text" name="userid" id="uid">
+                    <label></label><span id="checkmsg"></span>
+                </div>
                 <div><label for="pwd">비밀번호</label><input type="text" name="passwd" id="pwd"></div>
                 <div><label for="rpw">비밀번호 확인</label><input type="text" name="repwd" id="rpw"></div>
                 <div><label for="nm">이름</label><input type="text" name="name" id="nm"></div>
@@ -35,7 +38,7 @@
     </div>
     <script>
         let okbtn = document.getElementById("okbtn");
-        okbtn.addEventListener("click", checkJoinFrm);
+        let idFlag = false;
 
         function checkJoinFrm() {
             let uid = document.getElementById("uid");
@@ -49,12 +52,51 @@
             else if (rpw.value != pwd.value) alert('비밀번호 확인을 일치하지 않아요');
             else if (nm.value == '') alert('이름을 입력 해 주세요');
             else if (eml.value == '') alert('이메일을 입력 해 주세요');
+            else if (!idFlag) alert("아이디 중복 체크를 확인해 주세요");
             else {
                 let frm = document.join;
                 frm.method = 'post';
                 frm.submit();
             }
         }
+
+        let uid = document.querySelector("#uid");
+        okbtn.addEventListener("click", checkJoinFrm);
+        // 아이디 중복검사
+        // /checkuid/{userId} 의 userId 를 이용해서 중복여부를 확인
+        uid.addEventListener("blur", () => {
+            let req = new XMLHttpRequest();     // 1. ajax 객체 생성
+            req.onreadystatechange = () => {    // 4. 응답 받은 후 처리
+                // readyState : 0, 1(서버연결), 2(요청보냄), 3(요청처리), 4 (처리 완료, 응답 완료)
+                if (req.readyState == XMLHttpRequest.DONE) {
+                    if (req.status == 200) {
+                        let text = req.response;
+                        checkuserid(text);
+                    }
+                }
+            }
+
+            req.open('get', `/checkuid/` + uid.value);  // 2. 서버 요청 방식 정의
+            req.send();                                 // 3. 서버 요청 보냅
+            /*fetch(`/checkuid/` + uid.value)
+                .then(response => response.text())
+                .then(text => checkuserid(text))*/
+
+            function checkuserid(result) {
+                let msgArea = document.querySelector("#checkmsg");
+
+                if (result == '1') {
+                    idFlag = false;
+                    msgArea.innerHTML = "사용 불가능한 아이디 입니다.";
+                    msgArea.style.color = 'red';
+                }
+                else {
+                    idFlag = true;
+                    msgArea.innerHTML = "사용 가능한 아이디 입니다.";
+                    msgArea.style.color = 'blue';
+                }
+            }
+        });
     </script>
 </body>
 </html>

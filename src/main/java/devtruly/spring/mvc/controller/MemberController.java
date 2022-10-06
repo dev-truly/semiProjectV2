@@ -1,5 +1,6 @@
 package devtruly.spring.mvc.controller;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import devtruly.spring.mvc.service.MemberService;
 import devtruly.spring.mvc.vo.MemberVO;
 import org.slf4j.Logger;
@@ -8,13 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.RowMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 public class MemberController {
@@ -92,5 +95,33 @@ public class MemberController {
         }
 
         return returnPage;
+    }
+
+    @ResponseBody
+    @GetMapping(path = {"/checkuid/{userId}"})
+    public String checkUid(
+            @PathVariable("userId") String userId
+    ) {
+        String resultMsg = "0";
+
+        if (msrv.checkUserid(userId) > 0) {
+            resultMsg = "1";
+        }
+
+        return resultMsg;
+    }
+
+    @ResponseBody
+    @GetMapping("/zipcode")
+    public void searchZip(
+            @RequestParam("searchText") String searchText,
+            HttpServletResponse res
+    ) throws IOException {
+        
+        String result = msrv.serachZipcode(searchText);
+
+        res.setContentType("application/json");
+        res.setCharacterEncoding("utf-8");
+        res.getWriter().print(msrv.serachZipcode(searchText));
     }
 }
